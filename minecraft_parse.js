@@ -39,8 +39,8 @@ class MinecraftParse {
     parse_file() {
         this.title = this.file.match(RegExp(this.regex.title))[1]
         this.description = this.file.match(RegExp(this.regex.description))[1]
-        this.graph = this.file.match(RegExp(this.regex.graph))[1]
-        this.graph_name = this.file.match(RegExp(this.regex.graph))[2]
+        this.graph = this.file.match(RegExp(this.regex.graph))[2]
+        this.graph_name = this.file.match(RegExp(this.regex.graph))[1]
         this.lesson = this.file.split(RegExp(this.regex.lesson))[2]
         var steps = this.lesson.split(RegExp(this.regex.step))
         console.log(this.lesson)
