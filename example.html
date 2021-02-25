@@ -1,0 +1,37 @@
+<!--
+    This is an example HTML file written by Nathan Nesbitt, 
+    copyright 2021 all rights reserved.
+-->
+<!DOCTYPE html>
+<html>
+    <main>
+        <input type="file" id="input_file" name="input_file" accept=".md">
+    </main>
+</html>
+
+<script type="module">
+    // Import the library //
+    import {MinecraftParse} from "./minecraft_parse.js";
+
+    // Variable where the data needs to be stored //
+    var parsed_data;
+
+    // This is an example that reads in a file and converts it to JSON //
+    window.addEventListener("load", () => {
+        
+        var input = document.getElementById("input_file");
+        
+        input.addEventListener("change", () => {
+            
+            var file_reader = new FileReader();
+            
+            file_reader.onload = () => {
+                console.log(file_reader.result)
+                parsed_data = new MinecraftParse(file_reader.result);
+                console.log(parsed_data)
+            }
+
+            file_reader.readAsText(input.files[0])
+        })
+    })
+</script>
