@@ -9,6 +9,7 @@ You can import it by running
     import {MinecraftParse} from "https://nathan-nesbitt.github.io/Minecraft_Parse/minecraft_parse.js";
 
     // Write your code here //
+</script>
 ```
 
 The main function takes a file, and strips all of the data into a JSON model.
