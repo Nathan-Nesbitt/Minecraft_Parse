@@ -19,12 +19,15 @@ class MinecraftParse {
             "description": /## Model Description([^#]*)/,
             "graph": /!\[(.*?)\]\((.*?)\)/,
             "lesson": /## Lesson([^#]*)/,
-            "step": /### ([^\n]*)([^`]*)\n```([^`]*)```/
+            "step": /### ([^\n]*)([^`]*)\n```([^`]*)```/,
+            "overview": /## Overview([^#]*)/,
+            "overview_values": /### ([^\n]*)([^#]*)/
         }
 
         this.file = file;
         this.title = null;
-        this.description = null;
+        this.description = {};
+        this.overview = {};
         this.graph = null;
         this.graph_name = null;
         this.lesson = null;
@@ -39,12 +42,16 @@ class MinecraftParse {
     parse_file() {
         this.title = this.file.match(RegExp(this.regex.title))[1]
         this.description = this.file.match(RegExp(this.regex.description))[1]
+        
+        var overview = this.file.split(RegExp(this.regex.overview))[2]
+        this.overview.title = overview.match(RegExp(this.regex.overview_values))[1]
+        this.overview.data = overview.match(RegExp(this.regex.overview_values))[2]
+        
         this.graph = this.file.match(RegExp(this.regex.graph))[2]
         this.graph_name = this.file.match(RegExp(this.regex.graph))[1]
+        
         this.lesson = this.file.split(RegExp(this.regex.lesson))[2]
         var steps = this.lesson.split(RegExp(this.regex.step))
-        console.log(this.lesson)
-        console.log(steps)
         for(var i = 1; i < steps.length; i+=4) {
             this.steps[steps[i]] = {
                 "text": steps[i+1],

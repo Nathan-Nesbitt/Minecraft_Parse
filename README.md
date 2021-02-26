@@ -19,6 +19,10 @@ The main function takes a file, and strips all of the data into a JSON model.
 {
     title: "",
     description: "",
+    overview: {
+        title: "",
+        data: ""
+    }
     graph: "",
     graph_name: "",
     steps: {
@@ -33,6 +37,15 @@ The main function takes a file, and strips all of the data into a JSON model.
 
 ### title
 Contains the title of the lesson. 
+
+### overview
+Information for the overview of the lesson.
+
+#### title
+The overview title specified in the file.
+
+#### data
+The information for the overview.
 
 ### description
 Contains the description of the lesson.
