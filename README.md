@@ -37,7 +37,7 @@ JSON object:
 }
 ```
 
-See [example.py](./example.py) for an example of how to format the markdown 
+See [example.md](./example.md) for an example of how to format the markdown 
 files to fit the parser. And see [example.html](./example.html) to see an 
 example on how to integrate this into a webpage.
 
