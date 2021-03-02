@@ -37,6 +37,7 @@ class MinecraftParse {
         // Parse the file //
         this.parse_file();
         // Check if required values got set //
+        console.log(this.steps)
         if(!this.title)
             throw new Error("The file specified is missing a title");
         if(!this.description)
@@ -65,7 +66,7 @@ class MinecraftParse {
         var lesson = this.file.split(RegExp(this.regex.lesson))[2]
         if(!lesson)
             throw new Error("The file specified doesn't have a proper lesson section");
-        
+        console.log(lesson)
         var steps = lesson.split(RegExp(this.regex.step))
         for(var i = 1; i < steps.length; i+=4) {
             this.steps[steps[i]] = {
