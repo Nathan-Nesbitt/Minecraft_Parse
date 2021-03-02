@@ -43,32 +43,51 @@ class MinecraftParse {
      * header levels and the different sections.
      */
     parse_file() {
-        if(this.file.match(RegExp(this.regex.title)).length == 0)
-            throw new Error("The file's title is not formatted properly.");
-        this.title = this.file.match(RegExp(this.regex.title))[1]
 
-        if(this.file.match(RegExp(this.regex.description)) == 0)
+        try {
+            this.title = this.file.match(RegExp(this.regex.title))[1]
+        }
+        catch (err) {
+            throw new Error("The file's title is not formatted properly.");
+        }
+
+        try {
+            this.description = this.file.match(RegExp(this.regex.description))[1]
+        }
+        catch (err) {
             throw new Error("The file's description is not formatted properly.");
-        this.description = this.file.match(RegExp(this.regex.description))[1]
-        
-        if(this.file.split(RegExp(this.regex.overview)) == 0)
+        }
+
+        try {
+            var overview = this.file.split(RegExp(this.regex.overview))[2]
+        }
+        catch (err) {
             throw new Error("The file's overview is not formatted properly.");
-        var overview = this.file.split(RegExp(this.regex.overview))[2]
-        
-        if(overview.match(RegExp(this.regex.overview_values)).length < 2)
+        }
+
+        try {
+            this.overview.title = overview.match(RegExp(this.regex.overview_values))[1]
+            this.overview.data = overview.match(RegExp(this.regex.overview_values))[2]
+        }
+        catch (err) {
             throw new Error("The file specified doesn't have enough overview info");
-        this.overview.title = overview.match(RegExp(this.regex.overview_values))[1]
-        this.overview.data = overview.match(RegExp(this.regex.overview_values))[2]
-        
-        if(this.file.match(RegExp(this.regex.graph)).length < 2)
+        }
+
+        try {
+            this.graph = this.file.match(RegExp(this.regex.graph))[2]
+            this.graph_name = this.file.match(RegExp(this.regex.graph))[1]        }
+        catch (err) {
             throw new Error("The file specified doesn't have enough graph info");
-        this.graph = this.file.match(RegExp(this.regex.graph))[2]
-        this.graph_name = this.file.match(RegExp(this.regex.graph))[1]
+        }
+
+        try {
+            var lesson = this.file.split(RegExp(this.regex.lesson))[2]
+            var steps = lesson.split(RegExp(this.regex.step))      
+        }
+        catch (err) {
+            throw new Error("The file specified doesn't have enough graph info");
+        }
         
-        if(this.file.split(RegExp(this.regex.lesson)).length < 2)
-            throw new Error("The file specified doesn't have enough lesson info");
-        var lesson = this.file.split(RegExp(this.regex.lesson))[2]
-        var steps = lesson.split(RegExp(this.regex.step))
         for(var i = 1; i < steps.length; i+=4) {
             this.steps[steps[i]] = {
                 "text": steps[i+1],
