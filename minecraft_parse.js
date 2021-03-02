@@ -42,8 +42,8 @@ class MinecraftParse {
             throw new Error("The file specified is missing a title");
         if(!this.description)
             throw new Error("The file specified is missing a description");
-        if(!this.steps.text || !this.steps.code) 
-            throw new Error("The file specified is missing parts of the lesson");
+        if(!this.steps.length == 0) 
+            throw new Error("The file specified is missing parts of the lesson content");
     }
 
     /**
