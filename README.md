@@ -15,25 +15,31 @@ You can import it by running
 The main function takes a file, and strips all of the data into a JSON model.
 ## Model
 
+The produced output from a properly formatted file should match the following
+JSON object:
+
 ```js
 {
-    title: "",
-    description: "",
+    title: "<title of the lesson>",
+    description: "<description of the lesson>",
     overview: {
-        title: "",
-        data: ""
-    }
-    graph: "",
-    graph_name: "",
+        title: "<title of the overview page>",
+        data: "<text for the overview page>"
+    },
+    graph: "<graph location>",
+    graph_name: "<graph text>",
     steps: {
-        "step 1 name": {
-            code: "",
-            text: ""
+        "<step name>": {
+            code: "<code for lesson>",
+            text: "<text for lesson>"
         }
     }
 }
 ```
 
+See [example.py](./example.py) for an example of how to format the markdown 
+files to fit the parser. And see [example.html](./example.html) to see an 
+example on how to integrate this into a webpage.
 
 ### title
 Contains the title of the lesson. 
