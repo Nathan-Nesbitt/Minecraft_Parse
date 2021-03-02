@@ -36,14 +36,6 @@ class MinecraftParse {
         this.steps = {};
         // Parse the file //
         this.parse_file();
-        // Check if required values got set //
-        console.log(this.steps)
-        if(!this.title)
-            throw new Error("The file specified is missing a title");
-        if(!this.description)
-            throw new Error("The file specified is missing a description");
-        if(!this.steps.length == 0) 
-            throw new Error("The file specified is missing parts of the lesson content");
     }
 
     /**
@@ -51,22 +43,31 @@ class MinecraftParse {
      * header levels and the different sections.
      */
     parse_file() {
+        if(this.file.match(RegExp(this.regex.title)).length == 0)
+            throw new Error("The file's title is not formatted properly.");
         this.title = this.file.match(RegExp(this.regex.title))[1]
+
+        if(this.file.match(RegExp(this.regex.description)) == 0)
+            throw new Error("The file's description is not formatted properly.");
         this.description = this.file.match(RegExp(this.regex.description))[1]
         
+        if(this.file.split(RegExp(this.regex.overview)) == 0)
+            throw new Error("The file's overview is not formatted properly.");
         var overview = this.file.split(RegExp(this.regex.overview))[2]
-        if(!overview)
-            throw new Error("The file specified doesn't have a proper overview section");
+        
+        if(overview.match(RegExp(this.regex.overview_values)).length < 2)
+            throw new Error("The file specified doesn't have enough overview info");
         this.overview.title = overview.match(RegExp(this.regex.overview_values))[1]
         this.overview.data = overview.match(RegExp(this.regex.overview_values))[2]
         
+        if(this.file.match(RegExp(this.regex.graph)).length < 2)
+            throw new Error("The file specified doesn't have enough graph info");
         this.graph = this.file.match(RegExp(this.regex.graph))[2]
         this.graph_name = this.file.match(RegExp(this.regex.graph))[1]
         
+        if(this.file.split(RegExp(this.regex.lesson)).length < 2)
+            throw new Error("The file specified doesn't have enough lesson info");
         var lesson = this.file.split(RegExp(this.regex.lesson))[2]
-        if(!lesson)
-            throw new Error("The file specified doesn't have a proper lesson section");
-        console.log(lesson)
         var steps = lesson.split(RegExp(this.regex.step))
         for(var i = 1; i < steps.length; i+=4) {
             this.steps[steps[i]] = {
@@ -74,6 +75,8 @@ class MinecraftParse {
                 "code": steps[i+2]
             }
         }
+        if(!this.steps.length == 0) 
+            throw new Error("The file specified is missing parts of the lesson content");
     }
 
     
