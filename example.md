@@ -1,28 +1,81 @@
-# My Example
+# Ore Finder
+
 ## Overview
-### My Overview Title
-This is some text about the overview of the model.
-Just some random text. 
+### Ore Finder Problem
+
+We are looking for a depth. This can be any value on the number line.
+Since we are looking for a value on the number line and not a group, 
+this is a REGRESSION problem.
+
+This model will make the bot mine at the predicted depth and biome.
+
+
 ## Model Description
-My model description
-is very complicated
+
+In this lesson we will use a Decision Tree to determine the location of a material. In order to find
+the location, we will search each node to look for the value that we want.
+
+Follow the splits in the tree for the material you want. The depth is listed below.
+
 ## Graph 
-![This is a description of the graph.](../static/includes/decision_tree.png)
+![In order to find the desired value, follow the split to the node you want.](https://github.com/Nathan-Nesbitt/Minecraft_Parse/blob/master/decision_tree.png)
+
 ## Lesson
 ### Instruction 1
-Do something
+First we create a connection to the game. Click NEXT to see the next step
 ```
-var foo();
+// Create connection to game and back end //
+var minecraft_api = new MinecraftAPIClient();
 ```
 
 ### Instruction 2
-Do something else
+Then we create a new model. Click NEXT to see the next step
+
 ```
-var foo();
+var args = {
+    connection: minecraft_api, 
+    file_name: "block_broken.csv", 
+    model_type: "decision_tree_regression", 
+    response_variables: ["FeetPosY", "Biome"],
+    features: ["Block"]
+}
+
+var minecraft_learns = new MinecraftLearns(args);
+
 ```
 
 ### Instruction 3
-Finally do something
+We determine what we want to predict and what to do when we have the prediction.
+
+Click NEXT to see the next step
+
 ```
-var foo();
+// Create a callback function that makes a prediction based on the game data //
+var callback_function_3 = function(data) {
+    var resource = "diamond_ore"
+    minecraft_learns.predict(data, [resource])
+    .then(
+        result => {
+            // Then use the response to tell the user where to do in the game //
+            if(data.body.properties.FeetPosY == result.body.prediction.FeetPosY)
+                minecraft_api.Say(["Mine here to find: ", resource]);
+            else
+                minecraft_api.Say(["You are at Y:"+ data.body.properties.FeetPosY + " to mine this resource go to Y:", result.body.prediction.FeetPosY]);
+        }            
+    )
+}
+```
+
+### Instruction 4
+We need to process the data and train the model before we predict.
+
+Click "RUN" to execute the model
+```
+// Function that cleans the data, then trains it on the previously defined params //
+minecraft_learns.process_data()
+    .then(minecraft_learns.train())
+    .then(() => {
+        // Then we create an event handler for the game event //
+        minecraft_api.PlayerTravelledEvent(callback_function_3)
+    })
 ```
